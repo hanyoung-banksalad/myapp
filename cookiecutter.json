@@ -1,0 +1,9 @@
+{
+    "repo_name": "myapp",
+    "description": "first go-rpc app",
+    "tech_spec": "",
+    "idl_path": "idl/myapp.go",
+    "codeowner": "banksalad",
+    "has_db": "n",
+    "has_external_api": "y"
+}
