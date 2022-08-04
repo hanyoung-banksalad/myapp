@@ -10,7 +10,7 @@ import (
 
 	"github.com/banksalad/go-banksalad"
 	"github.com/hanyoung-banksalad/myapp/config"
-	"github.com/hanyoung-banksalad/myapp/idl"
+	myapp "github.com/hanyoung-banksalad/myapp/idl"
 )
 
 type MyappServer struct {

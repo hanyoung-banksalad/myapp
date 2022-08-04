@@ -3,7 +3,7 @@ package handler
 import (
 	"context"
 
-	"github.com/hanyoung-banksalad/myapp/idl"
+	myapp "github.com/hanyoung-banksalad/myapp/idl"
 )
 
 type HealthCheckHandlerFunc func(ctx context.Context, req *myapp.HealthCheckRequest) (*myapp.HealthCheckResponse, error)

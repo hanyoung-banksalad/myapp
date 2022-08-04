@@ -11,7 +11,7 @@ import (
 
 	"github.com/banksalad/go-banksalad/grpcgateway/v2"
 	"github.com/hanyoung-banksalad/myapp/config"
-	"github.com/hanyoung-banksalad/myapp/idl"
+	myapp "github.com/hanyoung-banksalad/myapp/idl"
 )
 
 func NewHTTPServer(ctx context.Context, cfg config.Config) (*http.Server, error) {
