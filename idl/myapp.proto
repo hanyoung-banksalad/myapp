@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package myapp;
+
+import "google/api/annotations.proto";
+
+option go_package = "example.com/idl/myapp";
+
+service Myapp {
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse) {
+    option (google.api.http) = {
+      get: "/health"
+    };
+  }
+  rpc GetImage(GetImageRequest) returns (stream GetImageResponse) {
+    option (google.api.http) = {
+      get: "/images/{path}"
+    };
+  }
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {}
+
+message GetImageRequest {
+  string path = 1;
+}
+
+message GetImageResponse {
+  bytes data = 1;
+}
+
