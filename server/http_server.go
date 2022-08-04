@@ -10,8 +10,8 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/banksalad/go-banksalad/grpcgateway/v2"
-	"/Users/han058/go/myapp"
-	"github.com/banksalad/myapp/config"
+	"github.com/hanyoung-banksalad/myapp"
+	"github.com/hanyoung-banksalad/myapp/config"
 )
 
 func NewHTTPServer(ctx context.Context, cfg config.Config) (*http.Server, error) {

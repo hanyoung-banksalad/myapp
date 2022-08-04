@@ -13,9 +13,9 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
-	"github.com/banksalad/myapp/client"
-	"github.com/banksalad/myapp/config"
-	"github.com/banksalad/myapp/server"
+	"github.com/hanyoung-banksalad/myapp/client"
+	"github.com/hanyoung-banksalad/myapp/config"
+	"github.com/hanyoung-banksalad/myapp/server"
 	"github.com/banksalad/go-banksalad"
 )
 

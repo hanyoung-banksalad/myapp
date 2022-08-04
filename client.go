@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/banksalad/go-banksalad"
-	"/Users/han058/go/myapp"
+	"github.com/hanyoung-banksalad/myapp"
 )
 
 //go:generate mockgen -package myapp -destination ./mock_client.go -mock_names MyappClient=MockMyappClient /Users/han058/go/myapp MyappClient

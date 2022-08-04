@@ -1,4 +1,4 @@
-module github.com/banksalad/myapp
+module github.com/hanyoung-banksalad/myapp
 
 go 1.17
 

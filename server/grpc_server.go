@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"github.com/banksalad/go-banksalad"
-	"/Users/han058/go/myapp"
-	"github.com/banksalad/myapp/config"
+	"github.com/hanyoung-banksalad/myapp"
+	"github.com/hanyoung-banksalad/myapp/config"
 )
 
 type MyappServer struct {

@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"github.com/banksalad/myapp/server/handler"
+	"github.com/hanyoung-banksalad/myapp/server/handler"
 	"github.com/hanyoung-banksalad/myapp"
 )
 

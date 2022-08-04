@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"/Users/han058/go/myapp"
+	"github.com/hanyoung-banksalad/myapp"
 )
 
 func TestHealthCheck(t *testing.T) {
