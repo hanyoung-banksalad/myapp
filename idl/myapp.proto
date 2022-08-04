@@ -4,7 +4,7 @@ package myapp;
 
 import "google/api/annotations.proto";
 
-option go_package = "example.com/idl/myapp";
+option go_package = "github.com/hanyoung-banksalad/myapp/idl";
 
 service Myapp {
   rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse) {
