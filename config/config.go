@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/smira/go-statsd"
 
-	auth "github.com/hanyoung-banksalad/myapp/idl"
+	"github.com/banksalad/idl/gen/go/apis/v1/auth"
 )
 
 type Config interface {

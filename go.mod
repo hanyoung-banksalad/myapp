@@ -12,4 +12,7 @@ require (
 	google.golang.org/protobuf v1.27.1
 )
 
-require google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa
+require (
+	github.com/banksalad/idl v0.0.0-20220225064723-070dff409c67
+	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa
+)
