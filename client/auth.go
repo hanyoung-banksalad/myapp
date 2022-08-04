@@ -9,8 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/banksalad/go-banksalad"
-	auth "github.com/hanyoung-banksalad/myapp/idl"
+	"github.com/banksalad/idl/gen/go/apis/v1/auth"
 )
 
 const authServiceConfig = `{"loadBalancingPolicy":"round_robin"}`
