@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/hanyoung-banksalad/myapp/server/handler"
-	"github.com/hanyoung-banksalad/myapp"
 )
 
 // verify MyappServer implements all interface methods

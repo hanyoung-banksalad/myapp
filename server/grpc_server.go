@@ -9,7 +9,6 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"github.com/banksalad/go-banksalad"
-	"github.com/hanyoung-banksalad/myapp"
 	"github.com/hanyoung-banksalad/myapp/config"
 )
 

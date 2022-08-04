@@ -10,7 +10,6 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/banksalad/go-banksalad/grpcgateway/v2"
-	"github.com/hanyoung-banksalad/myapp"
 	"github.com/hanyoung-banksalad/myapp/config"
 )
 
