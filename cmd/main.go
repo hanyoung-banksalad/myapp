@@ -13,6 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
+	pb "github.com/hanyoung-banksalad/myapp/idl"
 	"github.com/hanyoung-banksalad/myapp/client"
 	"github.com/hanyoung-banksalad/myapp/config"
 	"github.com/hanyoung-banksalad/myapp/server"
@@ -103,4 +104,38 @@ func main() {
 
 	log.Info("stopping myapp gRPC server")
 	grpcServer.GracefulStop()
+}
+
+type imageServer struct{}
+
+var _ pb.ImageServer = (*imageServer)(nil)
+
+func (s *imageServer) GetImage(req *pb.GetImageRequest, stream pb.Image_GetImageServer) error {
+	f, err := os.Open("images/" + req.Path)
+	if err != nil {
+		return status.Error(codes.NotFound, "file not found")
+	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.WithError(err).Error("failed to close file")
+		}
+	}()
+
+	// Maximum 16KB size per stream.
+	buf := make([]byte, 16*2<<10)
+	for {
+		num, err := f.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return status.Error(codes.Internal, err.Error())
+		}
+
+		if err := stream.Send(&pb.GetImageResponse{Data: buf[:num]}); err != nil {
+			return status.Error(codes.Internal, err.Error())
+		}
+	}
+
+	return nil
 }
