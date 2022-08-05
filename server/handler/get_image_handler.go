@@ -1,12 +1,19 @@
 package handler
 
 import (
-	"context"
-	"fmt"
-	"time"
+	"os"
+	"io"
+	log "github.com/sirupsen/logrus"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	myapp "github.com/hanyoung-banksalad/myapp/idl"
 )
+
+type imageServer struct{}
+
+var _ myapp.ImageServer = (*imageServer)(nil)
+
 func (s *imageServer) GetImage(req *myapp.GetImageRequest, stream myapp.Image_GetImageServer) error {
 	f, err := os.Open("images/" + req.Path)
 	if err != nil {
