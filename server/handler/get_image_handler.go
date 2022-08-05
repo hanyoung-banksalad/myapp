@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	myapp "github.com/hanyoung-banksalad/idl"
+	myapp "github.com/hanyoung-banksalad/myapp/idl"
 )
 func (s *imageServer) GetImage(req *myapp.GetImageRequest, stream myapp.Image_GetImageServer) error {
 	f, err := os.Open("images/" + req.Path)
