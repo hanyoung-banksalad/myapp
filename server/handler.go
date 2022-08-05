@@ -13,3 +13,7 @@ var _ myapp.MyappServer = (*MyappServer)(nil)
 func (s *MyappServer) HealthCheck(ctx context.Context, req *myapp.HealthCheckRequest) (*myapp.HealthCheckResponse, error) {
 	return handler.HealthCheck()(ctx, req)
 }
+
+func (s *MyappServer) GetImage(ctx context.Context, req *myapp.GetImageRequest) (*currency.GetImageResponse, error) {
+	return handler.GetImage()(ctx, req)
+}
