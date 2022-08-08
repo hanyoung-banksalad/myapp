@@ -14,7 +14,7 @@ service Myapp {
   }
   rpc GetImage(GetImageRequest) returns (GetImageResponse) {
     option (google.api.http) = {
-      get: "/v1/messages/{message_id}"
+      get: "/images/{path}"
     };
   }
 }
@@ -24,15 +24,10 @@ message HealthCheckRequest {}
 message HealthCheckResponse {}
 
 message GetImageRequest {
-  message SubMessage {
-    string subfield = 1;
-  }
-  string message_id = 1;
-  int64 revision = 2;
-  SubMessage sub = 3;
+  string path = 1;
 }
 
 message GetImageResponse {
-  string message = 1;
+  string path = 1;
 }
 
