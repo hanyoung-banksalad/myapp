@@ -10,7 +10,7 @@ import (
 	"github.com/hanyoung-banksalad/myapp"
 )
 
-//go:generate mockgen -package myapp -destination ./mock_client.go -mock_names MyappClient=MockMyappClient /Users/han058/go/myapp MyappClient
+//go:generate mockgen -package myapp -destination ./mock_client.go -mock_names MyappClient=MockMyappClient github.com/hanyoung-banksalad/myapp MyappClient
 const serviceConfig = `{"loadBalancingPolicy":"round_robin"}`
 
 var (
