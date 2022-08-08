@@ -50,7 +50,7 @@ func local_request_Myapp_HealthCheck_0(ctx context.Context, marshaler runtime.Ma
 }
 
 var (
-	filter_Myapp_GetImage_0 = &utilities.DoubleArray{Encoding: map[string]int{"message": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_Myapp_GetImage_0 = &utilities.DoubleArray{Encoding: map[string]int{"message_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
 func request_Myapp_GetImage_0(ctx context.Context, marshaler runtime.Marshaler, client MyappClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -64,14 +64,14 @@ func request_Myapp_GetImage_0(ctx context.Context, marshaler runtime.Marshaler, 
 		_   = err
 	)
 
-	val, ok = pathParams["message"]
+	val, ok = pathParams["message_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "message")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "message_id")
 	}
 
-	protoReq.Message, err = runtime.String(val)
+	protoReq.MessageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "message", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "message_id", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -97,14 +97,14 @@ func local_request_Myapp_GetImage_0(ctx context.Context, marshaler runtime.Marsh
 		_   = err
 	)
 
-	val, ok = pathParams["message"]
+	val, ok = pathParams["message_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "message")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "message_id")
 	}
 
-	protoReq.Message, err = runtime.String(val)
+	protoReq.MessageId, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "message", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "message_id", err)
 	}
 
 	if err := req.ParseForm(); err != nil {
@@ -154,7 +154,7 @@ func RegisterMyappHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/myapp.Myapp/GetImage", runtime.WithHTTPPathPattern("/images/{message}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/myapp.Myapp/GetImage", runtime.WithHTTPPathPattern("/v1/messages/{message_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -236,7 +236,7 @@ func RegisterMyappHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/myapp.Myapp/GetImage", runtime.WithHTTPPathPattern("/images/{message}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/myapp.Myapp/GetImage", runtime.WithHTTPPathPattern("/v1/messages/{message_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -258,7 +258,7 @@ func RegisterMyappHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Myapp_HealthCheck_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"health"}, ""))
 
-	pattern_Myapp_GetImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"images", "message"}, ""))
+	pattern_Myapp_GetImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "messages", "message_id"}, ""))
 )
 
 var (
