@@ -49,7 +49,7 @@ func local_request_Myapp_HealthCheck_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func request_Myapp_GetImage_0(ctx context.Context, marshaler runtime.Marshaler, client MyappClient, req *http.Request, pathParams map[string]string) (Myapp_GetImageClient, runtime.ServerMetadata, error) {
+func request_Myapp_GetImage_0(ctx context.Context, marshaler runtime.Marshaler, client MyappClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetImageRequest
 	var metadata runtime.ServerMetadata
 
@@ -70,16 +70,34 @@ func request_Myapp_GetImage_0(ctx context.Context, marshaler runtime.Marshaler, 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "path", err)
 	}
 
-	stream, err := client.GetImage(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
+	msg, err := client.GetImage(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_Myapp_GetImage_0(ctx context.Context, marshaler runtime.Marshaler, server MyappServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetImageRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["path"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "path")
 	}
-	header, err := stream.Header()
+
+	protoReq.Path, err = runtime.String(val)
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "path", err)
 	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+
+	msg, err := server.GetImage(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
@@ -113,10 +131,26 @@ func RegisterMyappHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 	})
 
 	mux.Handle("GET", pattern_Myapp_GetImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/myapp.Myapp/GetImage", runtime.WithHTTPPathPattern("/images/{path}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Myapp_GetImage_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Myapp_GetImage_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
 	})
 
 	return nil
@@ -196,7 +230,7 @@ func RegisterMyappHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			return
 		}
 
-		forward_Myapp_GetImage_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_Myapp_GetImage_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -212,5 +246,5 @@ var (
 var (
 	forward_Myapp_HealthCheck_0 = runtime.ForwardResponseMessage
 
-	forward_Myapp_GetImage_0 = runtime.ForwardResponseStream
+	forward_Myapp_GetImage_0 = runtime.ForwardResponseMessage
 )
