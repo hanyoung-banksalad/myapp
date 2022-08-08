@@ -24,7 +24,12 @@ message HealthCheckRequest {}
 message HealthCheckResponse {}
 
 message GetImageRequest {
+  message SubMessage {
+    string subfield = 1;
+  }
   string path = 1;
+  int64 revision = 2;
+  SubMessage sub = 3;
 }
 
 message GetImageResponse {
