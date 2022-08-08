@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MyappClient interface {
 	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
-	GetImage(ctx context.Context, in *GetImageRequest, opts ...grpc.CallOption) (Myapp_GetImageClient, error)
+	GetImage(ctx context.Context, in *GetImageRequest, opts ...grpc.CallOption) (*GetImageResponse, error)
 }
 
 type myappClient struct {
@@ -43,36 +43,13 @@ func (c *myappClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, o
 	return out, nil
 }
 
-func (c *myappClient) GetImage(ctx context.Context, in *GetImageRequest, opts ...grpc.CallOption) (Myapp_GetImageClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Myapp_ServiceDesc.Streams[0], "/myapp.Myapp/GetImage", opts...)
+func (c *myappClient) GetImage(ctx context.Context, in *GetImageRequest, opts ...grpc.CallOption) (*GetImageResponse, error) {
+	out := new(GetImageResponse)
+	err := c.cc.Invoke(ctx, "/myapp.Myapp/GetImage", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &myappGetImageClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type Myapp_GetImageClient interface {
-	Recv() (*GetImageResponse, error)
-	grpc.ClientStream
-}
-
-type myappGetImageClient struct {
-	grpc.ClientStream
-}
-
-func (x *myappGetImageClient) Recv() (*GetImageResponse, error) {
-	m := new(GetImageResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // MyappServer is the server API for Myapp service.
@@ -80,7 +57,7 @@ func (x *myappGetImageClient) Recv() (*GetImageResponse, error) {
 // for forward compatibility
 type MyappServer interface {
 	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
-	GetImage(*GetImageRequest, Myapp_GetImageServer) error
+	GetImage(context.Context, *GetImageRequest) (*GetImageResponse, error)
 	mustEmbedUnimplementedMyappServer()
 }
 
@@ -91,8 +68,8 @@ type UnimplementedMyappServer struct {
 func (UnimplementedMyappServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HealthCheck not implemented")
 }
-func (UnimplementedMyappServer) GetImage(*GetImageRequest, Myapp_GetImageServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetImage not implemented")
+func (UnimplementedMyappServer) GetImage(context.Context, *GetImageRequest) (*GetImageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetImage not implemented")
 }
 func (UnimplementedMyappServer) mustEmbedUnimplementedMyappServer() {}
 
@@ -125,25 +102,22 @@ func _Myapp_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Myapp_GetImage_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetImageRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _Myapp_GetImage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetImageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(MyappServer).GetImage(m, &myappGetImageServer{stream})
-}
-
-type Myapp_GetImageServer interface {
-	Send(*GetImageResponse) error
-	grpc.ServerStream
-}
-
-type myappGetImageServer struct {
-	grpc.ServerStream
-}
-
-func (x *myappGetImageServer) Send(m *GetImageResponse) error {
-	return x.ServerStream.SendMsg(m)
+	if interceptor == nil {
+		return srv.(MyappServer).GetImage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/myapp.Myapp/GetImage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MyappServer).GetImage(ctx, req.(*GetImageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 // Myapp_ServiceDesc is the grpc.ServiceDesc for Myapp service.
@@ -157,13 +131,11 @@ var Myapp_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "HealthCheck",
 			Handler:    _Myapp_HealthCheck_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetImage",
-			Handler:       _Myapp_GetImage_Handler,
-			ServerStreams: true,
+			MethodName: "GetImage",
+			Handler:    _Myapp_GetImage_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "myapp.proto",
 }
